@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.core.mail import send_mail
 
 from stracks_api.client import exception, error
+from two.ol.util import get_client_ip
 
 from wheelcms_axle.actions import action_registry
 from wheelcms_axle.models import Configuration
@@ -17,12 +18,7 @@ class ContactForm(forms.Form):
 
 """
     TODO:
-    - receiver voor contact mail in site settings, default naar django settings
-      (admin) -- db update
-    - verplaatsen naar wheelcms_simplecontact
     - form stylen (grotere textarea)
-    - details in body (ip, referer, ...)
-
 """
 def contact_handler(handler, request, action):
     handler.context['form'] = ContactForm()
@@ -33,6 +29,8 @@ def contact_handler(handler, request, action):
             title = handler.instance.content().title
             message = form.cleaned_data.get('message', '')
             receiver = Configuration.config().mailto
+            ip = get_client_ip(request)
+
             if not receiver:
                 try:
                     receiver = settings.ADMINS[0][1]
@@ -43,9 +41,17 @@ def contact_handler(handler, request, action):
                                     error="Unfortunately, something went wrong")
 
 
+            body = """\
+Message from %(sender)s @ %(ip)s
+
+==
+
+%(message)s
+""" % dict(sender=sender, ip=ip, message=message)
+
             try:
                 send_mail('Feedback from %s on "%s"' % (sender, title),
-                          message,
+                          body,
                           sender,
                           [receiver],
                           fail_silently=False
@@ -59,6 +65,7 @@ def contact_handler(handler, request, action):
             ### Handle smtp issues! fail_silently=False
             return handler.redirect(handler.instance.path or '/',
                                     success="Your feedback has been sent")
-    return render_to_response("wheelcms_simplecontact/contact.html", handler.context)
+    return render_to_response("wheelcms_simplecontact/contact.html",
+                              handler.context)
 
 action_registry.register(contact_handler, "contact")
