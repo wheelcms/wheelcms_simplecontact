@@ -1,16 +1,13 @@
 {% extends "wheelcms_axle/base.html" %}
 
 {% block base_main %}
-{% if done %}
-Dankje
-{% else %}
-Dit is dan een contact form.
-<form method="POST">
-{% csrf_token %}
+<form method="POST" class="form-horizontal">
+  {% csrf_token %}
+  {% include "two.bootstrap/bootstrap-form.html" %}
 
- {% include "two.bootstrap/bootstrap-form.html" %}
-
-<input type="submit">
+  <div class="form-actions">
+    <input class="btn primary" type="submit" value="Add">
+    <a href="{{redirect_cancel}}" class="btn">Cancel</a>
+  </div>
 </form>
-{% endif %}
 {% endblock %}

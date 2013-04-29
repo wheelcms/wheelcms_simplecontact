@@ -12,14 +12,14 @@ from wheelcms_axle.actions import action_registry
 from wheelcms_axle.models import Configuration
 
 class ContactForm(forms.Form):
+    sender = forms.EmailField(
+                  help_text="The email address you can be reached on")
     subject = forms.CharField(max_length=100)
-    message = forms.CharField()
-    sender = forms.EmailField()
+    message = forms.CharField(widget=forms.Textarea)
 
-"""
-    TODO:
-    - form stylen (grotere textarea)
-"""
+##    TODO:
+##    - include authenticated data, if any. Optionally do not require sender
+##
 def contact_handler(handler, request, action):
     handler.context['form'] = ContactForm()
     if handler.post:
