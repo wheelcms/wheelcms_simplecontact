@@ -59,6 +59,6 @@ def contact_handler(handler, request, action):
             ### Handle smtp issues! fail_silently=False
             return handler.redirect(handler.instance.path or '/',
                                     success="Your feedback has been sent")
-    return render_to_response("wheelcms_axle/contact.html", handler.context)
+    return render_to_response("wheelcms_simplecontact/contact.html", handler.context)
 
 action_registry.register(contact_handler, "contact")
