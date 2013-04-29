@@ -1,0 +1,16 @@
+{% extends "wheelcms_axle/base.html" %}
+
+{% block base_main %}
+{% if done %}
+Dankje
+{% else %}
+Dit is dan een contact form.
+<form method="POST">
+{% csrf_token %}
+
+ {% include "two.bootstrap/bootstrap-form.html" %}
+
+<input type="submit">
+</form>
+{% endif %}
+{% endblock %}
