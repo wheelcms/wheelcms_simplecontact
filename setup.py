@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.8'
+version = '1.1'
 
 setup(name='wheelcms_simplecontact',
       version=version,
