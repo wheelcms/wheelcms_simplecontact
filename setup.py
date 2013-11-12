@@ -6,8 +6,7 @@ version = '1.1'
 setup(name='wheelcms_simplecontact',
       version=version,
       description="WheelCMS contact form",
-      long_description=open("README.md").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+      long_description=open("README.md").read(),
       classifiers=[
         "Programming Language :: Python",
         ],
