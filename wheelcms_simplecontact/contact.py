@@ -10,6 +10,8 @@ from two.ol.util import get_client_ip
 
 from wheelcms_axle.actions import action_registry
 from wheelcms_axle.models import Configuration
+from wheelcms_axle.actions import action
+from wheelcms_axle import permissions as p
 
 class ContactForm(forms.Form):
     sender = forms.EmailField(
@@ -20,6 +22,7 @@ class ContactForm(forms.Form):
 ##    TODO:
 ##    - include authenticated data, if any. Optionally do not require sender
 ##
+@action(p.public)
 def contact_handler(handler, request, action):
     handler.context['form'] = ContactForm()
     if handler.post:
