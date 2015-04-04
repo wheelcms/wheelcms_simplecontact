@@ -6,12 +6,19 @@ from django.shortcuts import render_to_response
 from django.core.mail import send_mail
 
 from stracks_api.client import exception, error
-from two.ol.util import get_client_ip
 
 from wheelcms_axle.actions import action_registry
 from wheelcms_axle.models import Configuration
 from wheelcms_axle.actions import action
 from wheelcms_axle import permissions as p
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 class ContactForm(forms.Form):
     sender = forms.EmailField(
